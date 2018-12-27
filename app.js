@@ -10,13 +10,15 @@ const fs = require('fs')
 const Json2csvTransform = require('json2csv').Transform;
 const moment = require('moment')
 async function getCsv(req, res, next) {
-    const prices = await db.prices.getAllData()    
-    const fields = [
+    const prices = await db.prices.getAllData().sort({createdAt:-1})
+  const fields = [
+    // 'counter',
+    'createdAt',
      'price',
      'lastUpdatedHour',
      'shopName',
      'product',
-     'counter'
+
     ]
     const opts = {fields}
     // const csv =json2csv(prices,opts)
@@ -24,7 +26,7 @@ async function getCsv(req, res, next) {
       let path = `./public/csv/${now}.csv`
 
    let outputPath = `./public/csv/${now}-parsed.csv`
-    
+
    const transformOpts = { highWaterMark: 16384, encoding: 'utf-8' };
    fs.appendFileSync(path, JSON.stringify(prices));
    const input = fs.createReadStream(path, { encoding: 'utf8' });
@@ -40,7 +42,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.get('/report', getCsv)
-app.listen(80,
+app.listen(8080,
     "0.0.0.0",
     function() {
         console.log('nodejs server started on', 80);

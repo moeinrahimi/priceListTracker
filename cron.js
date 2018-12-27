@@ -3,6 +3,7 @@ const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const { db } = require('./models');
 const schedule = require('node-schedule');
+const moment = require('moment')
 const urlsToInspect = [
     'https://emalls.ir/%D9%85%D8%B4%D8%AE%D8%B5%D8%A7%D8%AA_AMD-RYZEN-5-2600-3-4GHz-19MB-BOX-CPU~id~1413987',
     'https://emalls.ir/%D9%85%D8%B4%D8%AE%D8%B5%D8%A7%D8%AA_RAM-GSkill-Aegis-8GB-DDR4-3000MHz-CL16~id~1282391',
@@ -12,6 +13,7 @@ const urlsToInspect = [
     'https://emalls.ir/%D9%85%D8%B4%D8%AE%D8%B5%D8%A7%D8%AA_MSI-GeForce-GTX-1080-GAMING-X-8GB-Graphics-Card~id~363576',
     'https://emalls.ir/%D9%85%D8%B4%D8%AE%D8%B5%D8%A7%D8%AA_AMD-Ryzen-7-1700-CPU~id~685548'
 ]
+const urlsToInspectTest = [1]
 
 let htmll = `<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>
 AMD RYZEN 5 2600 3.4GHz 19MB BOX CPU فروشندگان و قیمت پردازنده
@@ -134,44 +136,60 @@ ooter-column hide700"> <h4> <a id="hlinklastnews" href="/News/16/">وب لاگ</
 با مکمل بنزین خودرو روبه رو شده اند و اکثر مکمل&amp;zwnj;ها قیمت&amp;zwnj;هایی بسیار عجیب غریب دارند که در برخی موارد چون مردم از قیمت واقعی و اصلی این&amp;zwnj;ها اطلاعی ندارند افرادی که در جایگاه&amp;zwnj;های سوخت قرار دارند از این موضوع سواستفاده می&amp;zwnj;کنند و قیمت&amp;zwnj;هایی بالاتر می&amp;zwnj;دهند.     رانندگان در دو مورد سردرگم می&amp;zwnj;شوند. مثلا نمی دانند آیا بنزین&amp;zwnj;ها به مکمل نیازی دارند و اگر نیاز دارند کدام مارک و کدام قیمت برای خریداری مناسب می&amp;zwnj;باشند؟     این مکمل&amp;zwnj;ها در شهر&amp;zwnj;ها و پمپ بنزین&amp;zwnj;های مختلف دارای قیمتی متفاوت می&amp;zwnj;باشند و دلیل این موضوع نیز نوسانات موجود در بازار ارز می&amp;zwnj; باشد.     در اين مقاله، قصد داريم با توضيح ويژگي هاي مختلف مکمل سوخت، راهنماي خريد آن ها را به شما ارائه کنيم. چنانچه قصد خريد اين محصولات را داريد، پيشنهاد مي کنيم ما را تا پايان اين مقاله همراهي کنيد تا ضمن کسب اطلاعات کامل درباره آن ها، بتوانيد خريدي درست و مطمئن انجام دهيد. با ما همراه باشيد...     &amp;nbsp;" href="/Text/342286/">راهنمای خرید مکمل سوخت</a></li> <li> <a title="سیستم ترمز خودروهای سواری، کامیون&amp;zwnj;ها و موتورسیکلت&amp;zwnj;ها شامل بخش&amp;zwnj;های جداگانه&amp;zwnj;ای است که با تبدیل عکس&amp;zwnj;العمل راننده به یک نیروی فیزیکی، خودرو را متوقف می&amp;zwnj;نماید. لنت از جمله بخش&amp;zwnj;های سیستم ترمز است که نداشتن دانش کافی در رابطه با نگهداری و تعویض به موقع آن خسارات جبران&amp;zwnj;ناپذیری در پی خواهد داشت. لنت از بخش&amp;zwnj;های مهم سیستم ترمز می&amp;zwnj;باشد زیرا با روتور (به اصطلاح دیسک خودرو) تماس پیدا کرده و علاوه بر ایجاد اصطکاک، فشار هم به آن وارد می&amp;zwnj;کند. در واقع روتور صفحه تخت و براقی می&amp;zwnj;باشد که می&amp;zwnj;توان آن را پشت چرخ بعضی از خودروها مشاهده کرد. فشار و اصطکاک وارد شده به روتور با کند کردن حرکت چرخ، در نهایت مانع حرکت آن می&amp;zwnj;شود. با نچرخیدن چرخ&amp;zwnj;ها، خودرو هم متوقف می&amp;zwnj;گردد. گاهی اوقات نقش لنت&amp;zwnj;ها در سیستم ترمز به دلیل ساده بودن آن، نادیده گرفته می&amp;lrm;شود. با هر بار کم کردن سرعت یا ایستادن، به دلیل وزن زیاد روی چرخ&amp;zwnj;ها و چرخیدن آن&amp;zwnj;ها با سرعت زیاد، به لنت&amp;zwnj;ها فشار زیادی وارد می&amp;zwnj;شود.     &amp;nbsp;" href="/Text/342284/">راهنمای خرید لنت ترمز</a></li> </ul> </div><div class="footer-column applications" style="text-align: center"> <h4><a href="http://emalls.ir/app">اپلیکشن های ایمالز </a></h4> <ul> <li><a href="https://cafebazaar.ir/app/ir.emalls.app/?l=fa" target="_blank"> <img alt="دریافت ایمالز از بازار" src="/src/emallscafebazar.png"/> </a></li><li><a href="https://play.google.com/store/apps/details?id=ir.emalls.app" target="_blank"> <img alt="دریافت ایمالز از پلای استور" src="/src/emallsgoogleplay.png"/> </a></li><li><a href="https://myket.ir/app/ir.emalls.app" rel="nofollow" target="_blank"> <img alt="دریافت ایمالز از پلای استور" src="/src/emallsmyket.png"/> </a></li><li><a href="https://new.sibapp.com/applications/emalls" target="_blank"> <img alt="دریافت ایمالز از سیب اپ" src="/src/emallssibapp.png"/> </a></li></ul> </div><div class="footer-column contactus"> <h4>ارتباط با ایمالز</h4> <ul> <li><a href="mailto:info@emalls.ir">info@emalls.ir</a></li><li> <a id="hlkcontact" href="/%d8%aa%d9%85%d8%a7%d8%b3">تماس با ما</a></li><li> <div class="footer_instagram"><a href="https://www.instagram.com/emalls_site/" target="_blank"> <img width="25" src="/src/instagram.svg"/> اینستاگرام ایمالز </a></div></li></ul> </div><div class="footer-column hide700"> <h4>درباره ایمالز</h4> <ul> <li> <a id="hlinkaboutemalls" href="/Text/1/" target="_blank">درباره ایمالز</a></li><li> <a id="hlinkruls" href="/Text/24707/" target="_blank">شرایط و قوانین</a></li><li> <img id='drftxlapdrftnbpegwmd' style='cursor: pointer' onclick='window.open("https://trustseal.enamad.ir/Verify.aspx?id=112220&p=PLHdykng3K24JOR3", "Popup","toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")' alt='' src='https://trustseal.enamad.ir/logo.aspx?id=112220&p=PLHdykng3K24JOR3'/> <img id='nbqesizpjxlzjzpeoeuk' style='cursor: pointer' onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=29178&p=uiwkpfvlrfthjyoemcsi", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")' alt='logo-samandehi' src='https://logo.samandehi.ir/logo.aspx?id=29178&p=odrfbsiynbpdyndtaqgw'/>  </li></ul> </div><div class="clear"></div><div class="rtl mt10 center-align">تمام حقوق برای ایمالز محفوظ است و استفاده از مطالب سایت تنها با ذکر نام ایمالز و درج
 لینک مستقیم مجاز است.</div><div class="ltr center-align"> <span id="lblCopyright">Copyright © 2012-2018 - All rights reserved.</span></div></div></div></form></body></html>`
 
-const start = async (counter) => {
+const start = async () => {
+  console.log('start counter started');
     try {
-        for (let i = 0; i < urlsToInspect.length; i++) {
-            const url = urlsToInspect[i];
-            const result = await axios.get(url)
-                .catch(e => console.log(e, 'err axios'))
-            let html = result.data
-            if (!html) console.log(html)
-            // console.log(html)
-            // console.log(html.substring(0, 20))
-            const dom = new JSDOM(html)
-            // dom.window.document.querySelectorAll('.shop-row').forEach((elm, b) => {
+        for (let i = 0; i < urlsToInspectTest.length; i++) {
+            const url = urlsToInspectTest[i];
+            // const result = await axios.get(url)
+            //     .catch(e => console.log(e, 'err axios'))
+            // let html = result.data
+            // if (!html) console.log(html,)
+
+            const dom = new JSDOM(htmll)
             let shops = dom.window.document.querySelectorAll('.shop-row')
-          let product = dom.window.document.querySelector('.product-title > h1.detailitemtitle').innerHTML;
-          // console.log(product)
-          // break
+          let product = dom.window.document.querySelector('.product-title > h1.detailitemtitle').textContent;
+          console.log(product)
+            let products= [ ]
               for (let b = 0; b < shops.length; b++) {
                 const elm = shops[b];
-                
-           
+
+                let now = moment().format('YYYY-MM-DD HH:mm')
                 let isHighlighted = elm.style.backgroundColor
                 if (!isHighlighted) {continue}
                 let price = elm.querySelector('.shop-price-wrapper > .inline-block > .shop-price').textContent
                 let lastUpdatedHour = elm.querySelector('.shop-price-wrapper > .inline-block > span').textContent;
-                let shopName = elm.querySelector('.shop-logo-wrapper > .shopnamespan> a').innerHTML;
-                
-                db.prices.insert({
-                    price,
-                    lastUpdatedHour,
-                    shopName,
-                    product,
-                    counter
-                }, (e, result) => {
-                  if (e) console.log(e, '')
-                    
-                })
+                let shopName = elm.querySelector('.shop-logo-wrapper > .shopnamespan> a').textContent;
+                // console.log(shopName, 'shop name')
+                price = price.replace(/,/g, '')
+                products.push({
+                  price,
+                  shopName,
+                  lastUpdatedHour,
+                  now,
+                  product
+                });
+                // db.prices.insert({
+                //     price,
+                //     lastUpdatedHour,
+                //     shopName,
+                //     product,
+                //     // counter,
+                //     createdAt: now
+                // }, (e, result) => {
+                //   if (e) console.log(e, '')
+
+                // })
             // })
-              }
+          }
+          let least = products.sort((min, b) => {
+            console.log(min,b)
+            return min.price - b.price
+          } )
+          db.prices.insert(least[0], (e, result) => {
+            if (e) console.log(e, '')
+
+          })
         }
     } catch (error) {
         console.log(error,'catch')
@@ -183,18 +201,20 @@ const start = async (counter) => {
 
 
 
+let timer = 10800000; // 3 hours
+setInterval(start,timer)
+// let nineSch = schedule.scheduleJob('00 30 07 * * *', function() {
+//     winston.info('09 oclock Time for tracker!');
+//     start(1)
+// });
 
-let nineSch = schedule.scheduleJob('00 30 07 * * *', function() {
-    winston.info('09 oclock Time for tracker!');
-    start(1)
-});
-
-let twelveSch = schedule.scheduleJob('00 30 10 * * *', function() {
-    winston.info('12 oclock Time for tracker!');
-    start(2)
-});
-let fifteenSch = schedule.scheduleJob('00 30 13 * * *', function() {
-    winston.info('15 oclock Time for tracker!');
-    start(3)
-});
-// start()
+// let twelveSch = schedule.scheduleJob('00 30 10 * * *', function() {
+//     winston.info('12 oclock Time for tracker!');
+//     start(2)
+// });
+// let fifteenSch = schedule.scheduleJob('00 30 13 * * *', function() {
+//     winston.info('15 oclock Time for tracker!');
+//     start(3)
+// });
+start()
+console.log('cron file loaded')
