@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@polka/send-type@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@polka/send-type/-/send-type-0.5.0.tgz#ced804fa06d9619ab3ea5c5093da193aea48fa9a"
-
 abab@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.0.tgz#aba0ab4c5eee2d4c79d3487d85450fb2376ebb0f"
@@ -863,6 +859,10 @@ stealthy-require@^1.1.0:
 symbol-tree@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
+
+text-table@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
 tough-cookie@>=2.3.3, tough-cookie@^2.5.0:
   version "2.5.0"

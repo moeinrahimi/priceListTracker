@@ -1,4 +1,4 @@
 node_modules
 wedeploy.json
 prices.db
-config.js
+# config.js
