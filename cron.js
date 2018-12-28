@@ -4,6 +4,7 @@ const { JSDOM } = jsdom;
 const { db } = require('./models');
 const schedule = require('node-schedule');
 const moment = require('moment')
+const discord = require('./helpers/discord')
 const urlsToInspect = [
     'https://emalls.ir/%D9%85%D8%B4%D8%AE%D8%B5%D8%A7%D8%AA_AMD-RYZEN-5-2600-3-4GHz-19MB-BOX-CPU~id~1413987',
     'https://emalls.ir/%D9%85%D8%B4%D8%AE%D8%B5%D8%A7%D8%AA_RAM-GSkill-Aegis-8GB-DDR4-3000MHz-CL16~id~1282391',
@@ -139,25 +140,27 @@ ooter-column hide700"> <h4> <a id="hlinklastnews" href="/News/16/">وب لاگ</
 const start = async () => {
   console.log('start counter started');
     try {
-        for (let i = 0; i < urlsToInspectTest.length; i++) {
-            const url = urlsToInspectTest[i];
-            // const result = await axios.get(url)
-            //     .catch(e => console.log(e, 'err axios'))
-            // let html = result.data
+        for (let i = 0; i < urlsToInspect.length; i++) {
+            const url = urlsToInspect[i];
+            const result = await axios.get(url)
+                .catch(e => console.log(e, 'err axios'))
+            let html = result.data
             // if (!html) console.log(html,)
 
-            const dom = new JSDOM(htmll)
+            const dom = new JSDOM(html)
             let shops = dom.window.document.querySelectorAll('.shop-row')
           let product = dom.window.document.querySelector('.product-title > h1.detailitemtitle').textContent;
           console.log(product)
             let products= [ ]
               for (let b = 0; b < shops.length; b++) {
                 const elm = shops[b];
+try {
+  
 
                 let now = moment().format('YYYY-MM-DD HH:mm')
                 let isHighlighted = elm.style.backgroundColor
                 if (!isHighlighted) {continue}
-                let price = elm.querySelector('.shop-price-wrapper > .inline-block > .shop-price').textContent
+  let price = elm.querySelector('.shop-price-wrapper > .inline-block > .shop-price').textContent 
                 let lastUpdatedHour = elm.querySelector('.shop-price-wrapper > .inline-block > span').textContent;
                 let shopName = elm.querySelector('.shop-logo-wrapper > .shopnamespan> a').textContent;
                 // console.log(shopName, 'shop name')
@@ -181,14 +184,24 @@ const start = async () => {
 
                 // })
             // })
+} catch (error) {
+console.log(error)
+}
           }
           let least = products.sort((min, b) => {
             console.log(min,b)
             return min.price - b.price
           } )
-          db.prices.insert(least[0], (e, result) => {
+          let data = least[0]
+          db.prices.insert({ ...data, url }, (e, result) => {
             if (e) console.log(e, '')
-
+            
+            let message = `${result.product} 
+            ${result.price} قیمت :
+            ${result.url}آدرس
+            ${result.lastUpdatedHour} آخرین بروز رسانی
+            ${result.shopName} نام` 
+            discord.sendMessage(message)
           })
         }
     } catch (error) {
@@ -204,17 +217,14 @@ const start = async () => {
 let timer = 10800000; // 3 hours
 setInterval(start,timer)
 // let nineSch = schedule.scheduleJob('00 30 07 * * *', function() {
-//     winston.info('09 oclock Time for tracker!');
 //     start(1)
 // });
 
 // let twelveSch = schedule.scheduleJob('00 30 10 * * *', function() {
-//     winston.info('12 oclock Time for tracker!');
 //     start(2)
 // });
 // let fifteenSch = schedule.scheduleJob('00 30 13 * * *', function() {
-//     winston.info('15 oclock Time for tracker!');
 //     start(3)
 // });
-start()
+// start()
 console.log('cron file loaded')
