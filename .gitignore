@@ -1,4 +1,5 @@
 node_modules
 wedeploy.json
-prices.db
+./models/prices.db
 # config.js
+yarn-error.log
